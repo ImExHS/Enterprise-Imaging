@@ -7,14 +7,73 @@
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
-
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ '/var/www/html/worklistEI/src/Controller/ConsumeApiController.php'|file_link(0) }}">src/Controller/ConsumeApiController.php</a></code></li>
-        <li>Your template at <code><a href="{{ '/var/www/html/worklistEI/templates/consume_api/index.html.twig'|file_link(0) }}">templates/consume_api/index.html.twig</a></code></li>
-    </ul>
+<div class="row w-100">
+    <div class="col-12 d-flex justify-content-center w-100 py-5">
+        <h1>WorkList</h1>    
+    </div>
+    <div class="example-wrapper col-md-12 w-100 d-flex justify-content-center px-5">
+        <table class="table w-100 table-striped table-hover table-sm table-responsive table-bordered px-5" id="workList">
+            <thead>
+                <tr>
+                <th scope="col">Study name</th>
+                <th scope="col">Study date</th>
+                <th scope="col">Study time</th>
+                <th scope="col">Modalities</th>
+                <th scope="col">Referring physician</th>
+                <th scope="col">Patient name</th>
+                <th scope="col">Birth date patient</th>
+                <th scope="col">Sex patient</th>
+                <th scope="col">Url</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for study in studyList %}
+                    <tr>
+                        <td>{{ study.studyName }}</td>
+                        <td>{{ study.studyDate }}</td>
+                        <td>{{ study.studyTime }}</td>
+                        <td>{% for modality in study.modalities %}
+                            {{ modality }} - 
+                        {% endfor %}</td>
+                        <td>{{ study.referringPhysician }}</td>
+                        <td>{{ study.patientName }}</td>
+                        <td>{{ study.birthDatePatient }}</td>
+                        <td>{{ study.sexPatient }}</td>
+                        <td><a href = "{{ study.retriveUrl }}">{{ study.retriveUrl }}</a></td>
+                    </tr>
+                {% endfor %}
+                
+            </tbody>
+        </table>
+    </div>
+    
+    </div>
 </div>
+<div class="modal" tabindex="-1" id="modalVisor">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Modal next node</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Action next node</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#workList').DataTable();
+
+        $('#workList tbody').on('dblclick', 'tr', function () {
+            $('#modalVisor').modal('show');
+            //alert( 'click' );
+        } );
+    } );
+</script>
 {% endblock %}
