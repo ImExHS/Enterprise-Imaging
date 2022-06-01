@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello ConsumeApiController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+<div class="row w-100 p-5">
+    <div class="col-auto">
+        <label for="idWorkflow">Id workflow</label>
+    </div>
+    <div class="col-auto">
+        <input type="text" class="form-control" id="idWorkFlow" name = "idWorkFlow">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary mb-3" id="send">send</button>
+    </div>
+    
+</div>
+
+<script>
+
+    const orchestratorUrl = "https://orchestrator.imexhs.com/workflows";
+ 
+    document
+    .getElementById('send')
+        .addEventListener('click', async function () {
+        const workflowId = document.querySelector(
+            'input[name="idWorkFlow"]'
+        ).value;
+        const dataFlow = await fetch(
+            `${orchestratorUrl}/${workflowId}`
+        );
+        const flow = await dataFlow.json();
+        if(!flow.error){
+            console.log(flow);
+            location.assign(`${flow.node.route}?workflow=${workflowId}&nodeType=${flow.node.type}`);
+        }else{
+            alert(flow.error);
+        }
+    });
+</script>
+{% endblock %}
+

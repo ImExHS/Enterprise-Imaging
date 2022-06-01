@@ -17,6 +17,12 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        default_options: 
+            max_redirects: 7
+            verify_host: false
+            verify_peer: false
+
 when@test:
     framework:
         test: true

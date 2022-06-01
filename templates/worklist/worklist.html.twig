@@ -70,8 +70,44 @@
     $(document).ready( function () {
         $('#workList').DataTable();
 
-        $('#workList tbody').on('dblclick', 'tr', function () {
-            $('#modalVisor').modal('show');
+        $('#workList tbody').on('dblclick', 'tr', async function () {
+            const orchestratorUrl = "https://orchestrator.imexhs.com/workflows";
+            //$('#modalVisor').modal('show');
+            const queryParams = location.search;
+            const params = new URLSearchParams(queryParams);
+            const workflowId = params.get('workflow');
+            const processId = params.get('process');
+            const currentNode = "label-worklist node";
+            const resdirectToNextStep = async (workflowId, data, processId) => {
+                
+            }
+
+            try {
+                const data = {
+                    step: 'next',
+                    status: 1,
+                    currentNode
+                }; 
+                const response = await fetch(`${orchestratorUrl}/${workflowId}`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                    body: JSON.stringify(data)
+                });
+                if(!response.ok){
+                    alert("Error");
+                }
+                const json = await response.json();
+                if(!json.error){
+                    console.log(json);
+                    location.assign(`${json.route}?workflow=${workflowId}&process=${processId}`);
+                }else{
+                    alert(json.error);
+                }
+            } catch (error) {
+                console.log(error);
+            }
             //alert( 'click' );
         } );
     } );

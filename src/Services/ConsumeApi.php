@@ -5,7 +5,7 @@ namespace App\Services;
 use Exception;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class GetStudies
+class ConsumeApi
 {
     private $httpClient;
 
