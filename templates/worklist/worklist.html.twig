@@ -15,7 +15,8 @@
         <table class="table w-100 table-striped table-hover table-sm table-responsive table-bordered px-5" id="workList">
             <thead>
                 <tr>
-                <th scope="col">Study name</th>
+                <th scope="col" style = "display:none">Study name</th>
+                <th scope="col" >Study name</th>
                 <th scope="col">Study date</th>
                 <th scope="col">Study time</th>
                 <th scope="col">Modalities</th>
@@ -29,6 +30,7 @@
             <tbody>
                 {% for study in studyList %}
                     <tr>
+                        <td style = "display:none">{{ study.studyUID }}</td>
                         <td>{{ study.studyName }}</td>
                         <td>{{ study.studyDate }}</td>
                         <td>{{ study.studyTime }}</td>
@@ -68,7 +70,7 @@
 </div>
 <script>
     $(document).ready( function () {
-        $('#workList').DataTable();
+        let table = $('#workList').DataTable();
 
         $('#workList tbody').on('dblclick', 'tr', async function () {
             const orchestratorUrl = "https://orchestrator.imexhs.com/workflows";
@@ -78,6 +80,7 @@
             const workflowId = params.get('workflow');
             const processId = params.get('process');
             const currentNode = "label-worklist node";
+            let idStudy = table.row( this ).data()[0];
             const resdirectToNextStep = async (workflowId, data, processId) => {
                 
             }
@@ -101,7 +104,8 @@
                 const json = await response.json();
                 if(!json.error){
                     console.log(json);
-                    location.assign(`${json.route}?workflow=${workflowId}&process=${processId}`);
+                    console.log(idStudy);
+                    location.assign(`${json.route}?workflow=${workflowId}&idStudy=${idStudy}&process=${processId}`);
                 }else{
                     alert(json.error);
                 }
