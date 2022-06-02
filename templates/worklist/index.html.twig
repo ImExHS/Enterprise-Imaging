@@ -24,23 +24,27 @@
 
     const orchestratorUrl = "https://orchestrator.imexhs.com/workflows";
     
-    document
-    .getElementById('send')
-    .addEventListener('click', async function () {
-        const workflowId = document.querySelector(
-            'input[name="idWorkFlow"]'
-        ).value;
-        const dataFlow = await fetch(
-            `${orchestratorUrl}/${workflowId}`
-        );
-        const flow = await dataFlow.json();
-        if(!flow.error){
-            console.log(flow);
-            location.assign(`${flow.node.route}?workflow=${workflowId}&nodeType=${flow.node.type}`);
-        }else{
-            alert(flow.error);
-        }
-    });
+        document
+        .getElementById('send')
+        .addEventListener('click', async function () {
+            const workflowId = document.querySelector(
+                'input[name="idWorkFlow"]'
+            ).value;
+            const dataFlow = await fetch(
+                `${orchestratorUrl}/${workflowId}`
+            );
+            if(!dataFlow.ok){
+                    alert("Error");
+                }
+            const flow = await dataFlow.json();
+           
+            if(!flow.error){
+                console.log(dataFlow.ok);
+                location.assign(`${flow.node.route}?workflow=${workflowId}&nodeType=${flow.node.type}`);
+            }else{
+                alert(flow.error);
+            }
+        });
     
 </script>
 {% endblock %}
