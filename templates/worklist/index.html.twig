@@ -39,8 +39,7 @@
             const flow = await dataFlow.json();
            
             if(!flow.error){
-                console.log(dataFlow.ok);
-                location.assign(`${flow.node.route}?workflow=${workflowId}&nodeType=${flow.node.type}`);
+                location.assign(`${flow.node.route}?workflow=${workflowId}&start=${flow.start}&dataSource=${flow.dataSource}`);
             }else{
                 alert(flow.error);
             }

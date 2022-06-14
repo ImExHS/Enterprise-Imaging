@@ -27,9 +27,13 @@ class WorklistController extends AbstractController
     public function showWorklist(ConsumeApi $consumeApi, Request $request): Response
     {
         $studyList = [];
-        
-        if($request->query->get('nodeType') === 'initialnode'){
-            $studyList = $consumeApi->getRequest('GET', 'https://127.0.0.1:8000/gateway/' . 'pacs'); 
+        $dataSource = $request->query->get('dataSource');
+        if($request->query->get('start')){
+            $studyList = $consumeApi->getRequest('GET', 'https://127.0.0.1:8000/gateway/' . $dataSource); 
+           
+        }
+        else{
+            return new Response('This node is not an initial node');
         }
         
         return $this->render('worklist/worklist.html.twig', [
